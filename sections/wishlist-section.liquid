@@ -1,0 +1,51 @@
+<div id="wishlist-wrapper">
+  <div class="wishlist-products grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  <p id="empty-wishlist" class="text-center mt-4 hidden">Your wishlist is empty.</p>
+</div>
+
+<script src="{{ 'wishlist-manager.js' | asset_url }}" defer="defer"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const wishlistManager = window.wishlistManager;
+    if (!wishlistManager) return;
+
+    const wishlist = wishlistManager.getWishlist();
+    const container = document.querySelector('.wishlist-products');
+    const emptyMsg = document.getElementById('empty-wishlist');
+
+    if (wishlist.length === 0) {
+      emptyMsg.classList.remove('hidden');
+      return;
+    }
+
+    wishlist.forEach(({ url }) => {
+      fetch(`${url}.json`)
+        .then((res) => res.json())
+        .then((data) => {
+          const product = data.product;
+
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <div class="product-card">
+              <a href="/products/${product.handle}">
+                <img src="${product.image.src}" alt="${product.title}">
+                <h3>${product.title}</h3>
+                <p>${product.variants[0].price} ${product.variants[0].price_currency || ''}</p>
+              </a>
+              <span
+                class="wishlist-icon"
+                data-product-id="${product.id}"
+                data-product-url="${product.url}">
+              </span>
+            </div>
+          `;
+
+          const productCard = div.firstElementChild;
+          const icon = productCard.querySelector('.wishlist-icon');
+          wishlistManager.bindIcon(icon);
+          container.appendChild(productCard);
+        })
+        .catch((err) => console.error('Fetch failed:', err));
+    });
+  });
+</script>

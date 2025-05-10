@@ -160,7 +160,7 @@ if (!customElements.get('product-info')) {
 
       buildRequestUrlWithParams(url, optionValues, shouldFetchFullPage = false) {
         const params = [];
-
+        debugger;
         !shouldFetchFullPage && params.push(`section_id=${this.sectionId}`);
 
         if (optionValues.length) {

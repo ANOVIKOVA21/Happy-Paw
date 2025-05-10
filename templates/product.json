@@ -45,11 +45,9 @@
             "show_gift_card_recipient": true
           }
         },
-        "custom_liquid_7tdyMG": {
-          "type": "custom_liquid",
-          "settings": {
-            "custom_liquid": "<button id=\"wishlist-btn\">❤️ Add to Wishlist</button>"
-          }
+        "wishlist_icon": {
+          "type": "wishlist_icon",
+          "settings": {}
         },
         "description": {
           "type": "description",
@@ -69,7 +67,7 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "custom_liquid_7tdyMG",
+        "wishlist_icon",
         "description",
         "share"
       ],
