@@ -33,7 +33,7 @@ window.wishlistManager = {
   },
 
   bindIcon(element) {
-    const productId = parseInt(element.dataset.productId, 10);
+    const productId = Number(element.dataset.productId);
     const productUrl = element.dataset.productUrl;
 
     this.updateIcon(element, productId);

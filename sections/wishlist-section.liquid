@@ -1,8 +1,17 @@
-<div id="wishlist-wrapper">
-  <div class="wishlist-products grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-  <p id="empty-wishlist" class="text-center mt-4 hidden">Your wishlist is empty.</p>
-</div>
-
+{{ 'section-wishlist-page.css' | asset_url | stylesheet_tag }}
+<section class="wishlist">
+  <h1 class="main-page-title page-title h0">{{ section.settings.heading }}</h1>
+  <p>{{ section.settings.description }}</p>
+  <div id="wishlist-wrapper">
+    <ul
+      class="
+        wishlist-products grid grid product-grid grid--2-col-tablet-down
+        grid--4-col-desktop
+      "
+    ></ul>
+    <p id="empty-wishlist" class="wishlist-empty hidden">Your Wishlist is empty now</p>
+  </div>
+</section>
 <script src="{{ 'wishlist-manager.js' | asset_url }}" defer="defer"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -26,18 +35,23 @@
 
           const div = document.createElement('div');
           div.innerHTML = `
-            <div class="product-card">
-              <a href="/products/${product.handle}">
-                <img src="${product.image.src}" alt="${product.title}">
-                <h3>${product.title}</h3>
-                <p>${product.variants[0].price} ${product.variants[0].price_currency || ''}</p>
+            <li class="product-card card grid__item">
+              <a class="product-link" href="/products/${product.handle}">
+                <div class="product-img-container">
+                  <img class="product-img" src="${product.image.src}" alt="${product.title}">
+                </div> 
+                    <h3 class="product-title">${product.title}</h3>
+                    <p class="product-price">${product.variants[0].price} ${
+            product.variants[0].price_currency || ''
+          }</p>
               </a>
               <span
                 class="wishlist-icon"
                 data-product-id="${product.id}"
-                data-product-url="${product.url}">
+                data-product-url="${product.url}"
+                title="Toggle wishlist">
               </span>
-            </div>
+            </li>
           `;
 
           const productCard = div.firstElementChild;
@@ -49,3 +63,30 @@
     });
   });
 </script>
+{% schema %}
+{
+  "name": "Wishlist",
+  "tag": "section",
+  "class": "shopify-section wishlist-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wishlist"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Buy your favorite products!</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wishlist",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
